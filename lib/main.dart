@@ -22,6 +22,9 @@ class QuizPage extends StatefulWidget {
 }
 
 class _QuizPageState extends State<QuizPage> {
+  List scoreKeeper = [
+  ];
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -37,7 +40,6 @@ class _QuizPageState extends State<QuizPage> {
                 'There will be any quiestions',
                 textAlign: TextAlign.center,
                 style: TextStyle(
-
                   color: Colors.white,
                   fontSize: 25,
                 ),
@@ -52,7 +54,17 @@ class _QuizPageState extends State<QuizPage> {
               splashColor: Colors.transparent,
               highlightColor: Colors.transparent,
               color: Colors.green,
-              onPressed: () {},
+              onPressed: () {
+                if (scoreKeeper.length <= 15){
+                setState(() {
+                  scoreKeeper.add(Icon(
+                    Icons.check,
+                    color: Colors.green,
+                  ));
+                });}else{
+                  scoreKeeper.clear();
+                }
+              },
               child: Text(
                 'TRUE',
                 style: TextStyle(
@@ -71,6 +83,15 @@ class _QuizPageState extends State<QuizPage> {
               splashColor: Colors.transparent,
               color: Colors.red,
               onPressed: () {
+                if(scoreKeeper.length <= 15){
+                setState(() {
+                  scoreKeeper.add(Icon(
+                    Icons.close,
+                    color: Colors.red,
+                  ));
+                });}else{
+                  scoreKeeper.clear();
+                }
               },
               child: Text(
                 'FALSE',
@@ -81,6 +102,29 @@ class _QuizPageState extends State<QuizPage> {
               ),
             ),
           ),
+        ),
+        Expanded(
+          child: Padding(
+            padding: const EdgeInsets.all(15.0),
+            child: FlatButton(
+              highlightColor: Colors.transparent,
+              splashColor: Colors.transparent,
+              color: Colors.grey,
+              onPressed: () {
+                setState(() {
+                  scoreKeeper.clear();
+                });
+              },
+              child: Icon(
+                Icons.restart_alt,
+                color: Colors.white,
+                size: 40,
+              ),
+            ),
+          ),
+        ),
+        Row(
+          children: <Widget>[...scoreKeeper],
         ),
       ],
     );
