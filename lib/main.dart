@@ -22,9 +22,23 @@ class QuizPage extends StatefulWidget {
 }
 
 class _QuizPageState extends State<QuizPage> {
-  List scoreKeeper = [
+  List scoreKeeper = [];
+  List<String> questions = [
+    'Electrons move faster than the speed of light.',
+    'Light travels in a straight line.',
+    'The Mona Liza was stolen from the Louvre in 1911.',
+    'People may sneeze or cough while sleeping deeply.',
+    'Peanuts are not nuts!',
+    'The Big Apple is a nickname given to Washington D.C in 1971.'
   ];
 
+  List<bool> answers = [
+    false,true,true,false,true,false
+  ];
+
+
+  int numberOfQuestions = 0;
+  //false,true,true,false,true,false
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -37,7 +51,7 @@ class _QuizPageState extends State<QuizPage> {
             padding: const EdgeInsets.all(10.0),
             child: Center(
               child: Text(
-                'There will be any quiestions',
+                questions[numberOfQuestions],
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   color: Colors.white,
@@ -55,15 +69,21 @@ class _QuizPageState extends State<QuizPage> {
               highlightColor: Colors.transparent,
               color: Colors.green,
               onPressed: () {
-                if (scoreKeeper.length <= 15){
-                setState(() {
-                  scoreKeeper.add(Icon(
-                    Icons.check,
-                    color: Colors.green,
-                  ));
-                });}else{
-                  scoreKeeper.clear();
+                //The user picked TRUE.
+
+                bool correctAnswer = answers[numberOfQuestions];
+
+                if(scoreKeeper.length < 6 && correctAnswer == true){
+                  scoreKeeper.add(Icon(Icons.check,color:Colors.green,));
+                }else if(scoreKeeper.length < 6 && correctAnswer == false) {
+                  scoreKeeper.add(Icon(Icons.close,color: Colors.red,));
                 }
+                setState(() {
+                  if(numberOfQuestions < 5){
+                    numberOfQuestions++;
+                  }
+                }
+                );
               },
               child: Text(
                 'TRUE',
@@ -83,15 +103,21 @@ class _QuizPageState extends State<QuizPage> {
               splashColor: Colors.transparent,
               color: Colors.red,
               onPressed: () {
-                if(scoreKeeper.length <= 15){
-                setState(() {
-                  scoreKeeper.add(Icon(
-                    Icons.close,
-                    color: Colors.red,
-                  ));
-                });}else{
-                  scoreKeeper.clear();
+                //The user picked FALSE.
+
+                bool correctAnswer = answers[numberOfQuestions];
+
+                if (correctAnswer == false){
+                  scoreKeeper.add(Icon(Icons.check,color: Colors.green,));
+                }else {
+                  scoreKeeper.add(Icon(Icons.close,color: Colors.red,));
                 }
+
+                setState(() {
+                  if(numberOfQuestions < 5){
+                    numberOfQuestions++;
+                  }
+                });
               },
               child: Text(
                 'FALSE',
@@ -99,26 +125,6 @@ class _QuizPageState extends State<QuizPage> {
                   color: Colors.white,
                   fontSize: 25,
                 ),
-              ),
-            ),
-          ),
-        ),
-        Expanded(
-          child: Padding(
-            padding: const EdgeInsets.all(15.0),
-            child: FlatButton(
-              highlightColor: Colors.transparent,
-              splashColor: Colors.transparent,
-              color: Colors.grey,
-              onPressed: () {
-                setState(() {
-                  scoreKeeper.clear();
-                });
-              },
-              child: Icon(
-                Icons.restart_alt,
-                color: Colors.white,
-                size: 40,
               ),
             ),
           ),
