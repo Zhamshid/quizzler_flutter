@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'questions.dart';
+
 
 void main() {
   runApp(MaterialApp(
@@ -23,17 +25,27 @@ class QuizPage extends StatefulWidget {
 
 class _QuizPageState extends State<QuizPage> {
   List scoreKeeper = [];
-  List<String> questions = [
-    'Electrons move faster than the speed of light.',
-    'Light travels in a straight line.',
-    'The Mona Liza was stolen from the Louvre in 1911.',
-    'People may sneeze or cough while sleeping deeply.',
-    'Peanuts are not nuts!',
-    'The Big Apple is a nickname given to Washington D.C in 1971.'
-  ];
+  // List<String> questions = [
+  //   'Electrons move faster than the speed of light.',
+  //   'Light travels in a straight line.',
+  //   'The Mona Liza was stolen from the Louvre in 1911.',
+  //   'People may sneeze or cough while sleeping deeply.',
+  //   'Peanuts are not nuts!',
+  //   'The Big Apple is a nickname given to Washington D.C in 1971.'
+  // ];
 
-  List<bool> answers = [
-    false,true,true,false,true,false
+  // List<bool> answers = [
+  //   false,true,true,false,true,false
+  // ];
+
+
+  List<Questions> qu_a = [
+    Questions('Electrons move faster than the speed of light.', false),
+    Questions('Light travels in a straight line.', true),
+    Questions('The Mona Liza was stolen from the Louvre in 1911.', true),
+    Questions('People may sneeze or cough while sleeping deeply.', false),
+    Questions('Peanuts are not nuts!', true),
+    Questions('The Big Apple is a nickname given to Washington D.C in 1971.', false),
   ];
 
 
@@ -51,7 +63,7 @@ class _QuizPageState extends State<QuizPage> {
             padding: const EdgeInsets.all(10.0),
             child: Center(
               child: Text(
-                questions[numberOfQuestions],
+                qu_a[numberOfQuestions].questionText,
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   color: Colors.white,
@@ -71,7 +83,7 @@ class _QuizPageState extends State<QuizPage> {
               onPressed: () {
                 //The user picked TRUE.
 
-                bool correctAnswer = answers[numberOfQuestions];
+                bool correctAnswer = qu_a[numberOfQuestions].questionAnswer;
 
                 if(scoreKeeper.length < 6 && correctAnswer == true){
                   scoreKeeper.add(Icon(Icons.check,color:Colors.green,));
@@ -105,7 +117,7 @@ class _QuizPageState extends State<QuizPage> {
               onPressed: () {
                 //The user picked FALSE.
 
-                bool correctAnswer = answers[numberOfQuestions];
+                bool correctAnswer = qu_a[numberOfQuestions].questionAnswer;
 
                 if (correctAnswer == false){
                   scoreKeeper.add(Icon(Icons.check,color: Colors.green,));
@@ -136,3 +148,7 @@ class _QuizPageState extends State<QuizPage> {
     );
   }
 }
+
+
+
+
