@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 import 'quiz_brain.dart';
 
 QuizBrain quizBrain = QuizBrain();
@@ -7,6 +8,17 @@ void main() {
   runApp(MaterialApp(
     debugShowCheckedModeBanner: false,
     home: Scaffold(
+      appBar: AppBar(
+        title: Center(
+            child: Text(
+          "Quiz App",
+          style: TextStyle(
+            fontSize: 25,
+          ),
+        )),
+        backgroundColor: Colors.grey[900],
+        shadowColor: Colors.black,
+      ),
       backgroundColor: Colors.grey[900],
       body: SafeArea(
         child: Padding(
@@ -28,7 +40,28 @@ class QuizPage extends StatefulWidget {
 class _QuizPageState extends State<QuizPage> {
   List scoreKeeper = [];
 
-  int numberOfQuestions = 0;
+  void checkAnswer(bool userPickedAnswer) {
+    bool correctAnswer = quizBrain.getAnswer();
+
+    setState(() {
+    if (userPickedAnswer == correctAnswer)
+    {
+      scoreKeeper.add(Icon(
+        Icons.check,
+        color: Colors.green,
+      ));
+    } else {
+      scoreKeeper.add(Icon(
+        Icons.close,
+        color: Colors.red,
+      ));
+    }
+
+    quizBrain.nextQuestion();
+    });
+  }
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -42,7 +75,7 @@ class _QuizPageState extends State<QuizPage> {
             padding: const EdgeInsets.all(10.0),
             child: Center(
               child: Text(
-                quizBrain.qu_a[numberOfQuestions].questionText,
+                quizBrain.getQuestions(),
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   color: Colors.white,
@@ -61,26 +94,8 @@ class _QuizPageState extends State<QuizPage> {
               color: Colors.green,
               onPressed: () {
                 //The user picked TRUE.
+                checkAnswer(true);
 
-                bool correctAnswer =
-                    quizBrain.qu_a[numberOfQuestions].questionAnswer;
-
-                if (scoreKeeper.length < 6 && correctAnswer == true) {
-                  scoreKeeper.add(Icon(
-                    Icons.check,
-                    color: Colors.green,
-                  ));
-                } else if (scoreKeeper.length < 6 && correctAnswer == false) {
-                  scoreKeeper.add(Icon(
-                    Icons.close,
-                    color: Colors.red,
-                  ));
-                }
-                setState(() {
-                  if (numberOfQuestions < 5) {
-                    numberOfQuestions++;
-                  }
-                });
               },
               child: Text(
                 'TRUE',
@@ -101,27 +116,7 @@ class _QuizPageState extends State<QuizPage> {
               color: Colors.red,
               onPressed: () {
                 //The user picked FALSE.
-
-                bool correctAnswer =
-                    quizBrain.qu_a[numberOfQuestions].questionAnswer;
-
-                if (correctAnswer == false) {
-                  scoreKeeper.add(Icon(
-                    Icons.check,
-                    color: Colors.green,
-                  ));
-                } else {
-                  scoreKeeper.add(Icon(
-                    Icons.close,
-                    color: Colors.red,
-                  ));
-                }
-
-                setState(() {
-                  if (numberOfQuestions < 5) {
-                    numberOfQuestions++;
-                  }
-                });
+                checkAnswer(false);
               },
               child: Text(
                 'FALSE',
