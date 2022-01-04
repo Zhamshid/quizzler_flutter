@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
-import 'questions.dart';
+import 'quiz_brain.dart';
 
+QuizBrain quizBrain = QuizBrain();
 
 void main() {
   runApp(MaterialApp(
+    debugShowCheckedModeBanner: false,
     home: Scaffold(
       backgroundColor: Colors.grey[900],
       body: SafeArea(
@@ -25,32 +27,9 @@ class QuizPage extends StatefulWidget {
 
 class _QuizPageState extends State<QuizPage> {
   List scoreKeeper = [];
-  // List<String> questions = [
-  //   'Electrons move faster than the speed of light.',
-  //   'Light travels in a straight line.',
-  //   'The Mona Liza was stolen from the Louvre in 1911.',
-  //   'People may sneeze or cough while sleeping deeply.',
-  //   'Peanuts are not nuts!',
-  //   'The Big Apple is a nickname given to Washington D.C in 1971.'
-  // ];
-
-  // List<bool> answers = [
-  //   false,true,true,false,true,false
-  // ];
-
-
-  List<Questions> qu_a = [
-    Questions('Electrons move faster than the speed of light.', false),
-    Questions('Light travels in a straight line.', true),
-    Questions('The Mona Liza was stolen from the Louvre in 1911.', true),
-    Questions('People may sneeze or cough while sleeping deeply.', false),
-    Questions('Peanuts are not nuts!', true),
-    Questions('The Big Apple is a nickname given to Washington D.C in 1971.', false),
-  ];
-
 
   int numberOfQuestions = 0;
-  //false,true,true,false,true,false
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -63,7 +42,7 @@ class _QuizPageState extends State<QuizPage> {
             padding: const EdgeInsets.all(10.0),
             child: Center(
               child: Text(
-                qu_a[numberOfQuestions].questionText,
+                quizBrain.qu_a[numberOfQuestions].questionText,
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   color: Colors.white,
@@ -83,19 +62,25 @@ class _QuizPageState extends State<QuizPage> {
               onPressed: () {
                 //The user picked TRUE.
 
-                bool correctAnswer = qu_a[numberOfQuestions].questionAnswer;
+                bool correctAnswer =
+                    quizBrain.qu_a[numberOfQuestions].questionAnswer;
 
-                if(scoreKeeper.length < 6 && correctAnswer == true){
-                  scoreKeeper.add(Icon(Icons.check,color:Colors.green,));
-                }else if(scoreKeeper.length < 6 && correctAnswer == false) {
-                  scoreKeeper.add(Icon(Icons.close,color: Colors.red,));
+                if (scoreKeeper.length < 6 && correctAnswer == true) {
+                  scoreKeeper.add(Icon(
+                    Icons.check,
+                    color: Colors.green,
+                  ));
+                } else if (scoreKeeper.length < 6 && correctAnswer == false) {
+                  scoreKeeper.add(Icon(
+                    Icons.close,
+                    color: Colors.red,
+                  ));
                 }
                 setState(() {
-                  if(numberOfQuestions < 5){
+                  if (numberOfQuestions < 5) {
                     numberOfQuestions++;
                   }
-                }
-                );
+                });
               },
               child: Text(
                 'TRUE',
@@ -117,16 +102,23 @@ class _QuizPageState extends State<QuizPage> {
               onPressed: () {
                 //The user picked FALSE.
 
-                bool correctAnswer = qu_a[numberOfQuestions].questionAnswer;
+                bool correctAnswer =
+                    quizBrain.qu_a[numberOfQuestions].questionAnswer;
 
-                if (correctAnswer == false){
-                  scoreKeeper.add(Icon(Icons.check,color: Colors.green,));
-                }else {
-                  scoreKeeper.add(Icon(Icons.close,color: Colors.red,));
+                if (correctAnswer == false) {
+                  scoreKeeper.add(Icon(
+                    Icons.check,
+                    color: Colors.green,
+                  ));
+                } else {
+                  scoreKeeper.add(Icon(
+                    Icons.close,
+                    color: Colors.red,
+                  ));
                 }
 
                 setState(() {
-                  if(numberOfQuestions < 5){
+                  if (numberOfQuestions < 5) {
                     numberOfQuestions++;
                   }
                 });
@@ -148,7 +140,3 @@ class _QuizPageState extends State<QuizPage> {
     );
   }
 }
-
-
-
-
