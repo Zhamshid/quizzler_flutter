@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'quiz_brain.dart';
+import 'package:rflutter_alert/rflutter_alert.dart';
 
 QuizBrain quizBrain = QuizBrain();
 
@@ -39,29 +40,73 @@ class QuizPage extends StatefulWidget {
 
 class _QuizPageState extends State<QuizPage> {
   List scoreKeeper = [];
+  int countCorrect = 0;
 
   void checkAnswer(bool userPickedAnswer) {
     bool correctAnswer = quizBrain.getAnswer();
 
-    setState(() {
-    if (userPickedAnswer == correctAnswer)
-    {
-      scoreKeeper.add(Icon(
-        Icons.check,
-        color: Colors.green,
-      ));
-    } else {
-      scoreKeeper.add(Icon(
-        Icons.close,
-        color: Colors.red,
-      ));
+    if (userPickedAnswer == correctAnswer) {
+      countCorrect = countCorrect + 1;
     }
 
-    quizBrain.nextQuestion();
+    setState(() {
+      if (quizBrain.isFinished() == true) {
+        if (countCorrect == quizBrain.questionBankLength()) {
+          Alert(
+              context: context,
+              title: "QuizApp",
+              desc:
+                  "Yeah! You are finished successfully. Your score is $countCorrect",
+              buttons: [
+                DialogButton(
+                  color: Colors.green[600],
+                  height: 50,
+                  child: Text(
+                    'Next step',
+                    style: TextStyle(color: Colors.white, fontSize: 20),
+                  ),
+                  onPressed: () => Navigator.of(context).pop(),
+                )
+              ]).show();
+        }else{
+          Alert(
+              context: context,
+              title: "QuizApp",
+              desc:
+              "Oops :(  Your score is $countCorrect and you not passed",
+              buttons: [
+                DialogButton(
+                  color: Colors.red,
+                  height: 50,
+                  child: Text(
+                    'Restart',
+                    style: TextStyle(color: Colors.white, fontSize: 20),
+                  ),
+                  onPressed: () => Navigator.of(context).pop(),
+                )
+              ]).show();
+
+        }
+        quizBrain.reset();
+        scoreKeeper = [];
+        countCorrect = 0;
+      } else {
+        if (userPickedAnswer == correctAnswer) {
+          scoreKeeper.add(Icon(
+            Icons.check,
+            color: Colors.green,
+          ));
+        } else {
+          scoreKeeper.add(Icon(
+            Icons.close,
+            color: Colors.red,
+          ));
+        }
+
+        quizBrain.nextQuestion();
+      }
     });
   }
-
-
 
   @override
   Widget build(BuildContext context) {
@@ -95,7 +140,6 @@ class _QuizPageState extends State<QuizPage> {
               onPressed: () {
                 //The user picked TRUE.
                 checkAnswer(true);
-
               },
               child: Text(
                 'TRUE',

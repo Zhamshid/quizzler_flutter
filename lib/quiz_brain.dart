@@ -11,6 +11,7 @@ class QuizBrain {
     Questions('People may sneeze or cough while sleeping deeply.', false),
     Questions('Peanuts are not nuts!', true),
     Questions('The Big Apple is a nickname given to Washington D.C in 1971.', false),
+
   ];
 
   void nextQuestion() {
@@ -18,6 +19,10 @@ class QuizBrain {
       _numberOfQuestions++;
     }
 
+  }
+
+  int questionBankLength(){
+    return _qu_a.length;
   }
 
   String getQuestions (){
@@ -29,6 +34,22 @@ class QuizBrain {
   }
 
 
+  void CountOfCorrectAnswer() {
+
+  }
 
 
+  bool isFinished() {
+    if (_numberOfQuestions >= _qu_a.length - 1) {
+
+      print('Now returning true');
+      return true;
+
+    } else {
+      return false;
+    }
+  }
+  void reset() {
+  _numberOfQuestions = 0;
+}
 }
